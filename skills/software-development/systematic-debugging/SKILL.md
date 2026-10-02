@@ -2,7 +2,7 @@
 name: systematic-debugging
 description: "4-phase root cause debugging: understand bugs before fixing."
 version: 1.1.0
-author: Hermes Agent (adapted from obra/superpowers)
+author: obra/superpowers contributors, Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
 metadata:
@@ -288,8 +288,8 @@ If the user is present, show the ranked list before testing. They may have domai
 # Run the specific regression test
 pytest tests/test_module.py::test_regression -v
 
-# Run full suite — no regressions
-pytest tests/ -q
+# Run affected regression checks and repository-required broader checks
+# Use the documented runner; for Hermes: scripts/run_tests.sh
 ```
 
 ### 4. If Fix Doesn't Work — The Rule of Three

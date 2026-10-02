@@ -447,6 +447,7 @@ const sidebars: SidebarsConfig = {
                     'user-guide/skills/optional/finance/finance-lbo-model',
                     'user-guide/skills/optional/finance/finance-merger-model',
                     'user-guide/skills/optional/finance/finance-polymarket',
+                    'user-guide/skills/optional/finance/finance-portfolio-alert-routing',
                     'user-guide/skills/optional/finance/finance-pptx-author',
                     'user-guide/skills/optional/finance/finance-stocks',
                   ],

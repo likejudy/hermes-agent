@@ -40,7 +40,7 @@ Render text as large ASCII art banners. 571 built-in fonts.
 ### Setup
 
 ```bash
-pip install pyfiglet --break-system-packages -q
+python -m pip install pyfiglet  # In an activated project virtual environment
 ```
 
 ### Usage

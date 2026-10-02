@@ -54,16 +54,16 @@ Extract sender request, deadline, commitments already made, attachments, and mis
 
 Before drafting the first reply of a run, calibrate on evidence instead of guessing tone — study the user's own past replies before writing:
 
-- Sample: pull a bounded set of the user's recent sent replies via the connector skill — 20-50 where available, preferring replies to the same recipients or thread types being drafted. Truncated excerpts (roughly the first 40 lines of each message) carry the style facts; do not load full threads and let calibration crowd out inbox coverage.
+- Sample: pull a bounded set of the user's recent sent replies via the connector skill — 3-5 relevant replies initially; expand only when audience/style remains unclear, preferring replies to the same recipients or thread types being drafted. Truncated excerpts (roughly the first 40 lines of each message) carry the style facts; do not load full threads and let calibration crowd out inbox coverage.
 - Extract: greeting and sign-off habits (and per-audience differences), typical reply length, formality and warmth, sentence rhythm, emoji/exclamation use, and how the user says no or pushes back.
 - Record: keep the calibration as working notes for this run.
 - Fallback: if the Sent folder is empty or inaccessible, say so and fall back to matching the incoming thread's register.
 
 Then draft: answer every material question, match the calibrated voice (not a generic-professional one), avoid invented commitments, and state uncertainty. Resolve attachment/link facts before referencing them. Done when each sentence can be checked against the thread or an explicit user preference, and each draft's tone can be traced to the calibration notes.
 
-### 5. Present an approval batch
+### 5. Resolve authorization for the proposed batch
 
-For each proposed mutation show account, recipient/thread, action, draft summary, deadline, and risk. Let the user approve individually or as a clearly defined batch. Done when approval maps unambiguously to provider actions.
+For each proposed mutation show account, recipient/thread, action, draft summary, deadline, and risk. Reuse explicit send/archive authorization already given. Otherwise present the concrete drafts/actions for individual or batch approval. Done when approval maps unambiguously to provider actions.
 
 ### 6. Apply and verify
 

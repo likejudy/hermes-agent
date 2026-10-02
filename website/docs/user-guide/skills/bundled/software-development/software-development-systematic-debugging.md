@@ -17,7 +17,7 @@ description: "4-phase root cause debugging: understand bugs before fixing"
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/systematic-debugging` |
 | Version | `1.1.0` |
-| Author | Hermes Agent (adapted from obra/superpowers) |
+| Author | obra/superpowers contributors, Hermes Agent |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `debugging`, `troubleshooting`, `problem-solving`, `root-cause`, `investigation` |
@@ -306,8 +306,8 @@ If the user is present, show the ranked list before testing. They may have domai
 # Run the specific regression test
 pytest tests/test_module.py::test_regression -v
 
-# Run full suite — no regressions
-pytest tests/ -q
+# Run affected regression checks and repository-required broader checks
+# Use the documented runner; for Hermes: scripts/run_tests.sh
 ```
 
 ### 4. If Fix Doesn't Work — The Rule of Three
