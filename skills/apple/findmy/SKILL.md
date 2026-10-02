@@ -107,13 +107,13 @@ sleep 3
 # 2. Click on the AirTag item (stay on page — AirTag only updates when page is open)
 
 # 3. Periodically capture location
-while true; do
+for capture in 1 2 3 4 5 6; do
     screencapture -w -o ~/.hermes/cache/scratch/findmy-$(date +%H%M%S).png
     sleep 300  # Every 5 minutes
 done
 ```
 
-Analyze each screenshot with vision to extract coordinates, then compile a route.
+Use a bounded capture window agreed in the task; extend monitoring only when requested. Analyze each screenshot with `vision_analyze` to extract coordinates, then compile a route. Stop when the target becomes unavailable and label stale observations.
 
 ## Limitations
 

@@ -37,14 +37,17 @@ Specify currency, all-in vs pre-tax price, maximum price, availability/stock rul
 
 ### 3. Establish a live baseline, then schedule
 
-Fetch a bounded live result with `web_extract` or `browser_navigate` and record retrieval time, source price, fees/taxes, availability, and terms. Do not schedule until one foreground fetch works. Write the watch contract (item, condition, baseline observation) to a state file under `~/.hermes/price-watches/<watch-slug>.json`, then create the job:
+Fetch a bounded live result with `web_extract` or `browser_navigate` and record retrieval time, source price, fees/taxes, availability, and terms. Do not schedule until one foreground fetch works. Write the watch contract (item, condition, baseline observation) to a state file under the active profile’s `${HERMES_HOME:-$HOME/.hermes}/price-watches/<watch-slug>.json`, then create the job:
 
 ```
 cronjob(action="create",
         schedule="every 6h",
-        prompt="Load the product-price-monitor skill and run the tick for the watch contract at ~/.hermes/price-watches/<watch-slug>.json.",
-        deliver=<user's destination>)
+        prompt="Load the product-price-monitor skill and run the tick for the watch contract at <active HERMES_HOME>/price-watches/<watch-slug>.json.",
+        deliver="local",
+        failure_deliver=<user's failure-notice destination>)
 ```
+
+Resolve the state path to the active profile’s absolute path before saving the job. Store the notification destination in its self-contained prompt. The job uses `send_message` once only for a qualifying new result; local scheduler delivery prevents a second copy. Record a confirmed receipt before advancing delivered fingerprints/cutoffs. Reconcile ambiguous sends instead of retrying blindly.
 
 Pick a cadence that respects rate limits and site terms. Done when the baseline matches the exact item contract and the job exists.
 
@@ -60,7 +63,7 @@ Alert on threshold entry, qualifying availability, material lower price, or reco
 
 ### 6. Deliver or stay silent
 
-When a condition is met, the alert includes: exact item/variant, observed all-in price and source currency, availability/terms, threshold, retrieval timestamp, source link, and important uncertainty. Never claim inventory is reserved. When nothing qualifies, stay silent — no "still watching" noise unless a periodic all-clear was requested. Done when the state file reflects this run.
+When a condition is met, the alert includes: exact item/variant, observed all-in price and source currency, availability/terms, threshold, retrieval timestamp, source link, and important uncertainty. Never claim inventory is reserved. When nothing qualifies, stay silent — no "still watching" noise unless a periodic all-clear was requested. Advance last-observed state after a successful fetch, and delivered fingerprints only after a confirmed send. Done when the state file reflects those separate outcomes.
 
 ## Pitfalls
 

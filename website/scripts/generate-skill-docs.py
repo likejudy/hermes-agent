@@ -13,7 +13,9 @@ Sidebar is updated to nest all per-skill pages under Skills → Bundled / Option
 """
 
 from __future__ import annotations
+import os
 import re
+import subprocess
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
@@ -224,6 +226,25 @@ def mdx_escape_body(body: str) -> str:
     return "\n".join(processed)
 
 
+def source_repository() -> str:
+    """Link resources to the current repository, including when building a fork."""
+    repository = os.environ.get("GITHUB_REPOSITORY", "")
+    if re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
+        return repository
+    try:
+        remote = subprocess.check_output(
+            ["git", "remote", "get-url", "origin"], cwd=REPO,
+            text=True, stderr=subprocess.DEVNULL,
+        ).strip()
+    except (OSError, subprocess.CalledProcessError):
+        return "NousResearch/hermes-agent"
+    match = re.fullmatch(
+        r"(?:git@github\.com:|https://github\.com/)"
+        r"([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+?)(?:\.git)?/?", remote,
+    )
+    return match.group(1) if match else "NousResearch/hermes-agent"
+
+
 def rewrite_relative_links(body: str, meta: dict[str, Any]) -> str:
     """Rewrite references/foo.md style links in the SKILL.md body.
 
@@ -233,7 +254,7 @@ def rewrite_relative_links(body: str, meta: dict[str, Any]) -> str:
     pointing to the file in the repo.
     """
     source_dir = "skills" if meta["source_kind"] == "bundled" else "optional-skills"
-    base = f"https://github.com/NousResearch/hermes-agent/blob/main/{source_dir}/{meta['rel_path']}"
+    base = f"https://github.com/{source_repository()}/blob/main/{source_dir}/{meta['rel_path']}"
 
     def sub_link(m: re.Match) -> str:
         text = m.group(1)

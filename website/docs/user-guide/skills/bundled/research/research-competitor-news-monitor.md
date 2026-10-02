@@ -60,14 +60,17 @@ For each company include, where available:
 5. reputable trade and financial press
 6. job postings as weak supporting evidence
 
-Use `rss-feeds` (optional) or `blogwatcher` (optional, stateful) for feeds, `reddit-reading` for community discussion, and `web_search`/`web_extract` for pages. Write the watch contract (watchlist, categories, materiality threshold, last cutoff) to a state file under `~/.hermes/competitor-watches/<watch-slug>.json`, then create the job:
+Use `rss-feeds` (optional) or `blogwatcher` (optional, stateful) for feeds, `reddit-reading` for community discussion, and `web_search`/`web_extract` for pages. Write the watch contract (watchlist, categories, materiality threshold, last cutoff) to a state file under the active profile’s `${HERMES_HOME:-$HOME/.hermes}/competitor-watches/<watch-slug>.json`, then create the job:
 
 ```
 cronjob(action="create",
         schedule="every monday 9am",
-        prompt="Load the competitor-news-monitor skill and run the tick for the watch contract at ~/.hermes/competitor-watches/<watch-slug>.json.",
-        deliver=<user's destination>)
+        prompt="Load the competitor-news-monitor skill and run the tick for the watch contract at <active HERMES_HOME>/competitor-watches/<watch-slug>.json.",
+        deliver="local",
+        failure_deliver=<user's failure-notice destination>)
 ```
+
+Resolve the state path to the active profile’s absolute path before saving the job. Store the notification destination in its self-contained prompt. The job uses `send_message` once only for a qualifying new result; local scheduler delivery prevents a second copy. Record a confirmed receipt before advancing delivered fingerprints/cutoffs. Reconcile ambiguous sends instead of retrying blindly.
 
 Done when each requested event category has at least one intended primary source or a documented gap, and the job exists.
 
@@ -87,7 +90,7 @@ Score directness, source authority, novelty, customer/market impact, strategic r
 
 ### 6. Deliver the digest or stay silent
 
-Report per event: company, event, date, evidence links, what changed, why it matters, confidence, and follow-up watch. When there are no material events, stay silent unless a periodic all-clear was requested. Done when the state file reflects this run and the digest (if any) cites primary sources.
+Report per event: company, event, date, evidence links, what changed, why it matters, confidence, and follow-up watch. When there are no material events, stay silent unless a periodic all-clear was requested. Keep collection watermarks separate from delivered-event receipts so a failed send cannot lose a pending event. Done when the state file reflects those outcomes and the digest (if any) cites primary sources.
 
 ## Pitfalls
 

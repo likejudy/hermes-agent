@@ -57,7 +57,7 @@ If the file permissions and actor are correct, verify that Box AI is enabled and
 
 ## Extract and persist file metadata
 
-Treat extraction and persistence as separate operations. Unless the user asks for a preview, the extraction request authorizes writing the result back to Box; do not stop for a redundant confirmation.
+Treat extraction and persistence as separate operations. Return extracted results by default. Save metadata or a sidecar only when requested; reuse explicit write authorization already given instead of asking again.
 
 ### Inspect schemas before extracting
 
